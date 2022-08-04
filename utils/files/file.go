@@ -96,7 +96,7 @@ func (h ReplaceHelper) walkCallback(path string, f os.FileInfo, err error) error
 
 	//文件类型需要进行过滤
 
-	buf, err := ioutil.ReadFile(path)
+	buf, err := os.ReadFile(path)
 	if err != nil {
 		//err
 		return err
@@ -109,7 +109,7 @@ func (h ReplaceHelper) walkCallback(path string, f os.FileInfo, err error) error
 	newContent := strings.Replace(content, h.OldText, h.NewText, -1)
 
 	//重新写入
-	ioutil.WriteFile(path, []byte(newContent), 0)
+	os.WriteFile(path, []byte(newContent), 0)
 
 	return err
 }
@@ -188,10 +188,14 @@ func GetExt(fileName string) string {
 	return path.Ext(fileName)
 }
 
-// CheckExist 检查文件是否存在
-func CheckExist(src string) bool {
-	_, err := os.Stat(src)
+// Exists 检查文件是否存在
+func Exists(src string) bool {
+	return !IsNotExist(src)
+}
 
+// IsNotExist 检查文件是否不存在
+func IsNotExist(src string) bool {
+	_, err := os.Stat(src)
 	return os.IsNotExist(err)
 }
 
@@ -205,7 +209,7 @@ func CheckPermission(src string) bool {
 // IsNotExistMkDir 检查文件夹是否存在
 // 如果不存在则新建文件夹
 func IsNotExistMkDir(src string) error {
-	if exist := !CheckExist(src); exist == false {
+	if IsNotExist(src) {
 		if err := MkDir(src); err != nil {
 			return err
 		}
