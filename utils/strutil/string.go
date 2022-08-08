@@ -116,13 +116,13 @@ func IsAllNotEmpty(str ...string) bool {
 // Rep 将字符串之间字符替换
 func Rep(str, start, end, rep string) string {
 	strLen := len(str)
-	if strLen == 0 {
-		return str
+	if strLen > 0 && strings.Contains(str, start) && strings.Contains(str, end) {
+		startIdx := strings.Index(str, start) + 1
+		endIdx := strings.Index(str, end)
+		ret := str[0:startIdx] + rep + str[endIdx:strLen]
+		return ret
 	}
-	startIdx := strings.Index(str, start) + 1
-	endIdx := strings.Index(str, end)
-	ret := str[0:startIdx] + rep + str[endIdx:strLen]
-	return ret
+	return str
 }
 
 // Sub 将字符串之间字符截取
