@@ -1,5 +1,7 @@
 package strutil
 
+import "strings"
+
 var (
 	unValidMap = map[string]bool{
 		"0":                                    true,
@@ -12,6 +14,10 @@ var (
 
 func IsValidString(str string) bool {
 	if IsBlank(str) {
+		return false
+	}
+	if strings.HasPrefix(str, "__") {
+		//快手的无效字符
 		return false
 	}
 	return !unValidMap[str]
