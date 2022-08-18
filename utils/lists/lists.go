@@ -98,7 +98,7 @@ func Group[K ConstSet, V any](list []V, kvFun func(v V) K) (ret map[K][]V) {
 	return
 }
 
-func DelRepeat[T float64 | int64 | int | float32](list []T) []T {
+func DelRepeat[T float64 | int64 | uint64 | int | uint | int32 | uint32 | int8 | uint8 | float32 | string](list []T) []T {
 	m := make(map[T]any)
 	for _, uid := range list {
 		m[uid] = true
