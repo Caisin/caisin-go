@@ -227,7 +227,7 @@ func OpenOrCreateFile(src string) (*os.File, error) {
 // OpenOrCreate 有则打开,无则创建
 func OpenOrCreate(src string) (*os.File, error) {
 	if IsNotExist(src) {
-		return os.Create(src)
+		return OpenOrCreateFile(src)
 	}
 	return os.Open(src)
 }
