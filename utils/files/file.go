@@ -224,6 +224,14 @@ func OpenOrCreateFile(src string) (*os.File, error) {
 	return os.Create(src)
 }
 
+// OpenOrCreate 有则打开,无则创建
+func OpenOrCreate(src string) (*os.File, error) {
+	if IsNotExist(src) {
+		return os.Create(src)
+	}
+	return os.Open(src)
+}
+
 // OpenAppendFile 追加写入
 func OpenAppendFile(src string) (*os.File, error) {
 	IsNotExistMkDir(path.Dir(src))
@@ -246,7 +254,6 @@ func Open(name string, flag int, perm os.FileMode) (*os.File, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return f, nil
 }
 
