@@ -3,8 +3,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"gitee.com/Caisin/caisin-go/utils/recovery"
-	"gitee.com/Caisin/caisin-go/utils/strutil"
+	"github.com/Caisin/caisin-go/utils/recovery"
+	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/spf13/cobra"
 	"os"
 )

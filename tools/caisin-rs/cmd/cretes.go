@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"gitee.com/Caisin/caisin-go/utils/files"
-	"gitee.com/Caisin/caisin-go/utils/osutl"
-	"gitee.com/Caisin/caisin-go/utils/strutil"
+	"github.com/Caisin/caisin-go/utils/files"
+	"github.com/Caisin/caisin-go/utils/osutl"
+	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/spf13/cobra"
 	"path"
 )
@@ -49,7 +49,7 @@ registry = "https://github.com/rust-lang/crates.io-index"
 replace-with = 'caisin'
 
 [source.caisin]
-registry = "https://gitee.com/Caisin/crates.io-index"
+registry = "https://github.com/Caisin/crates.io-index"
 
 `)
 	case "reset":

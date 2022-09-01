@@ -2,7 +2,7 @@ package casbin
 
 import (
 	_ "embed"
-	"gitee.com/Caisin/caisin-go/utils/strutil"
+	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	gormadapter "github.com/casbin/gorm-adapter/v3"

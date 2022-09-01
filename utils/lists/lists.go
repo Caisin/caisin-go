@@ -1,7 +1,7 @@
 package lists
 
 import (
-	"gitee.com/Caisin/caisin-go/utils/math"
+	"github.com/Caisin/caisin-go/utils/math"
 	"sort"
 )
 

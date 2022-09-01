@@ -1,8 +1,9 @@
-module gitee.com/Caisin/caisin-go
+module github.com/Caisin/caisin-go
 
 go 1.19
 
 require (
+	github.com/antchfx/htmlquery v1.2.5
 	github.com/casbin/casbin/v2 v2.37.4
 	github.com/casbin/gorm-adapter/v3 v3.7.4
 	github.com/golang-jwt/jwt/v4 v4.4.2
@@ -13,7 +14,6 @@ require (
 
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
-	github.com/antchfx/htmlquery v1.2.5 // indirect
 	github.com/antchfx/xpath v1.2.1 // indirect
 	github.com/denisenkom/go-mssqldb v0.12.0 // indirect
 	github.com/glebarez/go-sqlite v1.16.0 // indirect

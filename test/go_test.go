@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"gitee.com/Caisin/caisin-go/command"
+	"github.com/Caisin/caisin-go/command"
 	"testing"
 )
 

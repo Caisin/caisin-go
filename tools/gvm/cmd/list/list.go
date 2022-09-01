@@ -2,7 +2,7 @@ package list
 
 import (
 	"fmt"
-	"gitee.com/Caisin/caisin-go/utils/strutil"
+	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/antchfx/htmlquery"
 	"github.com/spf13/cobra"
 	"strings"
