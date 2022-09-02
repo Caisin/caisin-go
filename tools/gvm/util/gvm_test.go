@@ -6,6 +6,6 @@ import (
 )
 
 func TestUpdateVersionIndex(t *testing.T) {
-	index, err := UpdateVersionIndex()
+	index, err := GetSetting()
 	fmt.Println(index, err)
 }

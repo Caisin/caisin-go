@@ -284,7 +284,7 @@ func GetType(p string) (string, error) {
 
 // ReadStr 文件读取
 func ReadStr(filePath string) (string, error) {
-	if contents, err := ioutil.ReadFile(filePath); err == nil {
+	if contents, err := os.ReadFile(filePath); err == nil {
 		//因为contents是[]byte类型，直接转换成string类型后会多一行空格,需要使用strings.Replace替换换行符
 		result := strings.Replace(string(contents), "\n", "", 1)
 		//fmt.Println("Use ioutil.ReadFile to read a file:", result)
@@ -292,6 +292,11 @@ func ReadStr(filePath string) (string, error) {
 	} else {
 		return "", err
 	}
+}
+
+// ReadBytes 文件读取
+func ReadBytes(filePath string) ([]byte, error) {
+	return os.ReadFile(filePath)
 }
 
 func ReadInt64(filePath string) int64 {

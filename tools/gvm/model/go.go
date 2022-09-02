@@ -1,5 +1,9 @@
 package model
 
+type Setting struct {
+	VersionList []string
+	Index       map[string][]GoVersion
+}
 type GoVersion struct {
 	Version     string //版本
 	FileName    string //文件名

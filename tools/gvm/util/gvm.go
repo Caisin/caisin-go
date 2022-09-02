@@ -1,12 +1,17 @@
 package util
 
 import (
+	"encoding/json"
 	"github.com/Caisin/caisin-go/command"
 	"github.com/Caisin/caisin-go/tools/gvm/consts"
 	"github.com/Caisin/caisin-go/tools/gvm/model"
+	"github.com/Caisin/caisin-go/utils/files"
+	"github.com/Caisin/caisin-go/utils/osutl"
 	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/antchfx/htmlquery"
 	"golang.org/x/net/html"
+	"os"
+	"path"
 	"strings"
 )
 
@@ -23,15 +28,17 @@ func GetCurrentVersion() *model.GoVersion {
 	return version
 }
 
-func UpdateVersionIndex() (map[string][]model.GoVersion, error) {
+func UpdateVersionIndex() (*model.Setting, error) {
 	doc, err := htmlquery.LoadURL(consts.IndexUrl)
 	if err != nil {
 		return nil, err
 	}
+	setting := &model.Setting{}
 	nodes := htmlquery.Find(doc, `//div[contains(@class,"expanded")]/h3[contains(@class,"toggleButton")]`)
 	ret := make(map[string][]model.GoVersion)
 	for _, node := range nodes {
 		version := GetVersionNameByVersionNode(node)
+		setting.VersionList = append(setting.VersionList, version)
 		trs := htmlquery.Find(node.Parent, "//tbody/tr")
 		versions := make([]model.GoVersion, 0)
 		for _, tr := range trs {
@@ -68,7 +75,16 @@ func UpdateVersionIndex() (map[string][]model.GoVersion, error) {
 		}
 		ret[version] = versions
 	}
-	return ret, err
+	setting.Index = ret
+	file, err := files.OpenOrCreateFile(getSettingFileName())
+	if err == nil {
+		defer file.Close()
+		bytes, err := json.Marshal(setting)
+		if err == nil {
+			_, err = file.Write(bytes)
+		}
+	}
+	return setting, err
 }
 
 func GetVersionNameByVersionNode(node *html.Node) string {
@@ -81,4 +97,26 @@ func GetVersionNameByVersionNode(node *html.Node) string {
 		}
 	}
 	return ""
+}
+
+func getSettingFileName() string {
+	home, _ := osutl.Home()
+	return path.Join(home, consts.GvmIdxSettingFile)
+}
+func GetSetting() (*model.Setting, error) {
+	var setting *model.Setting
+	settingFileName := getSettingFileName()
+	if files.Exists(settingFileName) {
+		str, err := os.ReadFile(settingFileName)
+		if err != nil {
+			return nil, err
+		}
+		setting = &model.Setting{}
+		err = json.Unmarshal(str, setting)
+		if err != nil {
+			return nil, err
+		}
+		return setting, nil
+	}
+	return UpdateVersionIndex()
 }

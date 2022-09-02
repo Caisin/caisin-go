@@ -1,7 +1,7 @@
 package consts
 
 const (
-	GvmIndSettingFile = ".gvm.index"
+	GvmIdxSettingFile = ".gvm.index"
 	IndexHost         = "https://golang.google.cn"
 	IndexUrl          = IndexHost + "/dl/"
 )
