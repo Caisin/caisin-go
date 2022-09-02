@@ -3,6 +3,7 @@ package install
 import (
 	"errors"
 	"fmt"
+	"github.com/Caisin/caisin-go/command"
 	"github.com/Caisin/caisin-go/tools/gvm/util"
 	"github.com/Caisin/caisin-go/utils/files"
 	"github.com/Caisin/caisin-go/utils/lists"
@@ -83,7 +84,7 @@ func run() error {
 			case osutl.Windows:
 				files.Unzip(realFileName, versionDir)
 			case osutl.Darwin, osutl.Linux, osutl.Freebsd:
-				files.DeCompress(realFileName, versionDir)
+				command.RunCur("tar", "-zxvf", realFileName, "-C", versionDir)
 			}
 			os.Remove(realFileName)
 		}
