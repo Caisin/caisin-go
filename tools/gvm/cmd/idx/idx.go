@@ -10,10 +10,11 @@ import (
 )
 
 var (
+	update   = false //是否更新索引
 	StartCmd = &cobra.Command{
-		Use:          "list",
-		Short:        "list all go version",
-		Example:      "gvm list",
+		Use:          "idx",
+		Short:        "go version idx",
+		Example:      "gvm idx",
 		SilenceUsage: true,
 		PreRun: func(cmd *cobra.Command, args []string) {
 		},
@@ -24,6 +25,7 @@ var (
 )
 
 func init() {
+	StartCmd.PersistentFlags().BoolVarP(&update, "update", "u", false, "update go version list index")
 
 }
 

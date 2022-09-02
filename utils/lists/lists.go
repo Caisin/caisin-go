@@ -1,6 +1,7 @@
 package lists
 
 import (
+	"fmt"
 	"github.com/Caisin/caisin-go/utils/math"
 	"sort"
 )
@@ -108,4 +109,28 @@ func DelRepeat[T float64 | int64 | uint64 | int | uint | int32 | uint32 | int8 |
 		list = append(list, uid)
 	}
 	return list
+}
+
+func Revert[T any](list []T) {
+	length := len(list)
+	size := length / 2
+	for i := 0; i < size; i++ {
+		tmp := list[i]
+		end := length - 1 - i
+		list[i] = list[end]
+		list[end] = tmp
+	}
+}
+
+func Print[T any](list []T) {
+	for _, t := range list {
+		fmt.Printf("%v\n", t)
+	}
+}
+
+func PrintRev[T any](list []T) {
+	l := len(list)
+	for i := l - 1; i >= 0; i-- {
+		fmt.Printf("%v\n", list[i])
+	}
 }
