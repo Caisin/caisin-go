@@ -6,7 +6,6 @@ import (
 	"github.com/Caisin/caisin-go/command"
 	"github.com/Caisin/caisin-go/tools/gvm/util"
 	"github.com/Caisin/caisin-go/utils/files"
-	"github.com/Caisin/caisin-go/utils/lists"
 	"github.com/Caisin/caisin-go/utils/osutl"
 	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/spf13/cobra"
@@ -65,7 +64,6 @@ func run() error {
 		}
 		return errors.New(fmt.Sprintf("version %s not found", version))
 	}
-	lists.Print(v)
 	fileName := fmt.Sprintf("%s.%s-%s", version, runtime.GOOS, runtime.GOARCH)
 	switch runtime.GOOS {
 	case osutl.Windows:
