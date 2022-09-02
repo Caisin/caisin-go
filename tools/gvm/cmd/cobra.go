@@ -3,7 +3,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/Caisin/caisin-go/tools/gvm/cmd/install"
 	"github.com/Caisin/caisin-go/tools/gvm/cmd/list"
+	_switch "github.com/Caisin/caisin-go/tools/gvm/cmd/switch"
 	"github.com/Caisin/caisin-go/utils/recovery"
 	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/spf13/cobra"
@@ -23,7 +25,9 @@ var rootCmd = &cobra.Command{
 		}
 		return nil
 	},
-	PersistentPreRunE: func(*cobra.Command, []string) error { return nil },
+	PersistentPreRunE: func(*cobra.Command, []string) error {
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		tip()
 	},
@@ -36,6 +40,8 @@ func tip() {
 
 func init() {
 	rootCmd.AddCommand(list.StartCmd)
+	rootCmd.AddCommand(install.StartCmd)
+	rootCmd.AddCommand(_switch.StartCmd)
 }
 
 // Execute : apply commands

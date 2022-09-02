@@ -1,6 +1,7 @@
 package model
 
 type Setting struct {
+	GvmPath     string
 	VersionList []string
 	Index       map[string][]GoVersion
 }

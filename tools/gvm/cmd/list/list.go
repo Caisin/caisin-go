@@ -37,6 +37,8 @@ func run() error {
 		}
 	}
 	version := util.GetCurrentVersion()
+	insts := util.InstalledVersions()
+	ret := lists.BoolMap(insts)
 	setting, err := util.GetSetting()
 	if err != nil {
 		return err
@@ -44,7 +46,9 @@ func run() error {
 	list := make([]string, 0)
 	for _, v := range setting.VersionList {
 		if v == version.Version {
-			v = strutil.Green(v + " current")
+			v = strutil.Green(v + " *current")
+		} else if ret[v] {
+			v = strutil.Green(v + " installed")
 		}
 		if strutil.IsNotBlank(key) {
 			if !strings.Contains(v, key) {

@@ -1,21 +1,18 @@
-package reqs
+package files
 
 import (
 	"errors"
 	"fmt"
-	"github.com/Caisin/caisin-go/utils/files"
 	"io"
 	"net/http"
 	"os"
-	"strconv"
 )
 
 func DownloadFile(url string, localPath string) error {
 	var (
-		fsize int64
-		buf   = make([]byte, 32*1024)
+		buf = make([]byte, 32*1024)
 	)
-	if files.Exists(localPath) {
+	if Exists(localPath) {
 		fmt.Println(localPath, "already download")
 		return nil
 	}
@@ -30,15 +27,8 @@ func DownloadFile(url string, localPath string) error {
 		return err
 	}
 
-	//读取服务器返回的文件大小
-	fsize, err = strconv.ParseInt(resp.Header.Get("Content-Length"), 10, 32)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println("fsize", fsize)
 	//创建文件
-	file, err := os.Create(tmpFilePath)
+	file, err := OpenOrCreateFile(tmpFilePath)
 	if err != nil {
 		return err
 	}
@@ -47,10 +37,12 @@ func DownloadFile(url string, localPath string) error {
 		return errors.New("body is null")
 	}
 	defer resp.Body.Close()
-	buffer, err := io.CopyBuffer(file, resp.Body, buf)
-	fmt.Println(buffer, err)
+	_, err = io.CopyBuffer(file, resp.Body, buf)
 	if err == nil {
-		file.Close()
+		err = file.Close()
+		if err != nil {
+			return err
+		}
 		err = os.Rename(tmpFilePath, localPath)
 	}
 	return err

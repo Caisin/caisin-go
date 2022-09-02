@@ -2,16 +2,19 @@ package util
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/Caisin/caisin-go/command"
 	"github.com/Caisin/caisin-go/tools/gvm/consts"
 	"github.com/Caisin/caisin-go/tools/gvm/model"
 	"github.com/Caisin/caisin-go/utils/files"
+	"github.com/Caisin/caisin-go/utils/lists"
 	"github.com/Caisin/caisin-go/utils/osutl"
 	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/antchfx/htmlquery"
 	"golang.org/x/net/html"
 	"os"
 	"path"
+	"runtime"
 	"strings"
 )
 
@@ -75,10 +78,18 @@ func UpdateVersionIndex() (*model.Setting, error) {
 		}
 		ret[version] = versions
 	}
+	existSetting, err := GetExistSetting()
+	if err == nil {
+		setting.GvmPath = existSetting.GvmPath
+	}
 	setting.Index = ret
 	file, err := files.OpenOrCreateFile(getSettingFileName())
 	if err == nil {
 		defer file.Close()
+		if strutil.IsBlank(setting.GvmPath) {
+			home, _ := osutl.Home()
+			setting.GvmPath = path.Join(home, consts.GvmSettingPath)
+		}
 		bytes, err := json.Marshal(setting)
 		if err == nil {
 			_, err = file.Write(bytes)
@@ -103,7 +114,7 @@ func getSettingFileName() string {
 	home, _ := osutl.Home()
 	return path.Join(home, consts.GvmIdxSettingFile)
 }
-func GetSetting() (*model.Setting, error) {
+func GetExistSetting() (*model.Setting, error) {
 	var setting *model.Setting
 	settingFileName := getSettingFileName()
 	if files.Exists(settingFileName) {
@@ -118,5 +129,55 @@ func GetSetting() (*model.Setting, error) {
 		}
 		return setting, nil
 	}
+	return nil, errors.New("not exist")
+}
+func GetSetting() (*model.Setting, error) {
+	setting, err := GetExistSetting()
+	if err == nil {
+		return setting, nil
+	}
 	return UpdateVersionIndex()
+}
+
+func SwitchVersion(version string) error {
+	setting, err := GetSetting()
+	if !strings.HasPrefix(version, "go") {
+		version = "go" + version
+	}
+	if GetCurrentVersion().Version == version {
+		return err
+	}
+	if err != nil {
+		return err
+	}
+	versionDir := path.Join(setting.GvmPath, version)
+	dataDir := path.Join(versionDir, "go")
+	if files.Exists(versionDir) && files.Exists(dataDir) {
+		os.RemoveAll(runtime.GOROOT())
+		files.CopyDir(dataDir, runtime.GOROOT())
+	} else {
+		println("you can switch below")
+		versions := InstalledVersions()
+		lists.Print(versions)
+		return errors.New(version + " not install")
+	}
+	//os.RemoveAll(dataDir)
+	return err
+}
+
+func InstalledVersions() []string {
+	setting, err := GetSetting()
+	if err != nil {
+		return nil
+	}
+	list := make([]string, 0)
+	dir, err := os.ReadDir(setting.GvmPath)
+	for _, entry := range dir {
+		name := entry.Name()
+		if !(entry.IsDir() && strings.HasPrefix(name, "go")) {
+			continue
+		}
+		list = append(list, name)
+	}
+	return list
 }
