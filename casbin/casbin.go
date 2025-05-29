@@ -2,6 +2,7 @@ package casbin
 
 import (
 	_ "embed"
+
 	"github.com/Caisin/caisin-go/utils/strutil"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
@@ -116,7 +117,7 @@ func (e *Casbin) GetUserAllows(user string) []Policy {
 
 // GetPolicies 获取用户权限列表
 func (e *Casbin) GetPolicies(sub, typ string) []Policy {
-	policy := e.GetFilteredNamedPolicy("p", 0, sub, typ)
+	policy, _ := e.GetFilteredNamedPolicy("p", 0, sub, typ)
 	policies := make([]Policy, 0)
 	for _, s := range policy {
 		if len(s) == 4 {

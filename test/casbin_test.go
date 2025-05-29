@@ -2,7 +2,7 @@ package test
 
 import (
 	_ "embed"
-	"gitee.com/Caisin/caisin-go/casbin"
+	"github.com/Caisin/caisin-go/casbin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"testing"
